@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  wsi-backend:
+    build: .
+    container_name: wsi-backend
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      - NODE_ENV=production
+    volumes:
+      - wsi-slides:/app/public/slides
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  wsi-slides:
+    driver: local
